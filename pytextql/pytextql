@@ -10,6 +10,8 @@ Usage:
 Options:
     --no-header         The source files do not contain headers in the first
                         row.
+    --named-tables      Use the filenames (without extension) of source files
+                        as the table name.
     --db=<path>         Store the resulting SQLite3 database at <path>
                         instead of using a temporary file. A good idea if
                         working on large (100mb+) files.
@@ -151,14 +153,14 @@ def main():
     with _open_db(args['--db']) as db:
         db.row_factory = sqlite3.Row
 
-        for source_path in args['<source>']:
+        for table_count, source_path in enumerate(args['<source>']):
             # There's at least one file/STDIN to load into the
             # database.
             if source_path == '-':
                 # '-' is a placeholder for STDIN.
                 source_io = sys.stdin
                 table_name = '-'
-            else:
+            elif args['--named-tables']:
                 source_io = open(source_path, 'rU')
                 # Get the filename (without any extension) and use
                 # it as the table's name.
@@ -166,6 +168,11 @@ def main():
                 table_name = os.path.splitext(
                     os.path.basename(source_path)
                 )[0]
+            else:
+                source_io = open(source_path, 'rU')
+                table_name = 'tbl{table_count}'.format(
+                    table_count=table_count
+                )
 
             with contextlib.closing(source_io):
                 headers, reader = _source(
