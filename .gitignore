@@ -55,4 +55,3 @@ nosetests.xml
 
 # Random project-related files.
 *.db
-*.csv
