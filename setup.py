@@ -26,16 +26,12 @@ def get_version():
 
 
 if __name__ == '__main__':
-    with open('README.md', 'rb') as readme:
-        long_description = readme.read()
-
     setup(
         name='pytextql',
         author='Tyler Kennedy',
         author_email='tk@tkte.ch',
         url='https://github.com/TkTech/pytextql',
         version=get_version(),
-        long_description=long_description,
         packages=find_packages(),
         include_package_data=True,
         install_requires=[
