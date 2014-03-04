@@ -29,6 +29,8 @@ A python-based clone of the textql tool.
     --chunk-size=<n>    The number of rows to insert per SQLite3 transaction.
                         [default: 50000]
     --sql=<q>, -s       Run an SQL query against the database.
+    --skip=<n>          Skip <n> number of rows from the start of the file.
+                        [default: 0]
 
 ## Examples
 

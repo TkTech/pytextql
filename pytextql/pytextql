@@ -25,6 +25,8 @@ Options:
     --chunk-size=<n>    The number of rows to insert per SQLite3 transaction.
                         [default: 50000]
     --sql=<q>, -s       Run an SQL query against the database.
+    --skip=<n>          Skip <n> number of rows from the start of the file.
+                        [default: 0]
 """
 import os
 import sys
@@ -61,12 +63,15 @@ def _open_db(db_path=None):
         os.remove(path)
 
 
-def _source(source, header=True, delimiter=',', encoding='utf8'):
+def _source(source, header=True, delimiter=',', encoding='utf8', skip=0):
     reader = util.UnicodeCSVReader(
         source,
         delimiter=delimiter,
         encoding=encoding
     )
+
+    for __ in itertools.repeat(None, skip):
+        next(reader)
 
     # We need the first row, either because it contains the column
     # headers, or because we need to know how many columns there
@@ -176,12 +181,18 @@ def main():
                 )
 
             with contextlib.closing(source_io):
+                # How many rows should we skip from the start
+                # of the file?
+                skip_count = max(0, int(args['--skip']))
+
                 headers, reader = _source(
                     source_io,
                     header=(not args['--no-header']),
                     encoding=args['--encoding'],
-                    delimiter=args['--delimiter']
+                    delimiter=args['--delimiter'],
+                    skip=skip_count
                 )
+
                 _create_table(db, table_name, headers)
                 _load_table(
                     db,
