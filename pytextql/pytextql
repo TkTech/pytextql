@@ -27,7 +27,6 @@ Options:
     --sql=<q>, -s       Run an SQL query against the database.
 """
 import os
-import csv
 import sys
 import sqlite3
 import os.path
@@ -196,7 +195,10 @@ def main():
             c.execute(args['--sql'])
             headers = [d[0] for d in c.description]
 
-            writer = csv.writer(sys.stdout)
+            writer = util.UnicodeCSVWriter(
+                sys.stdout,
+                encoding=args['--encoding']
+            )
             writer.writerow(headers)
 
             while True:
