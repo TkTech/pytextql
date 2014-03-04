@@ -48,3 +48,18 @@ class UnicodeCSVReader(object):
     @property
     def line_num(self):
         return self.reader.line_num
+
+
+class UnicodeCSVWriter(object):
+    def __init__(self, *args, **kwargs):
+        self.encoding = kwargs.pop('encoding', 'utf8')
+        self.writer = csv.writer(*args, **kwargs)
+
+    def writerow(self, row):
+        self.writer.writerow([
+            column.encode(self.encoding) for column in row
+        ])
+
+    def writerows(self, rows):
+        for row in rows:
+            self.writerow(row)
