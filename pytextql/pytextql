@@ -5,7 +5,7 @@
 A python-based clone of the textql tool.
 
 Usage:
-    pytextql [<source>...] [-s <query>...] [options]
+    pytextql [<source>...] [-s <query>] [options]
 
 Options:
     --no-header         The source files do not contain headers in the first
@@ -183,20 +183,19 @@ def main():
                     n=int(args['--chunk-size'])
                 )
 
-        for query in args['--sql']:
-            with contextlib.closing(db.cursor()) as c:
-                c.execute(query)
-                headers = [d[0] for d in c.description]
+        with contextlib.closing(db.cursor()) as c:
+            c.execute(args['--sql'])
+            headers = [d[0] for d in c.description]
 
-                writer = csv.writer(sys.stdout)
-                writer.writerow(headers)
+            writer = csv.writer(sys.stdout)
+            writer.writerow(headers)
 
-                while True:
-                    results = c.fetchmany()
-                    if not results:
-                        break
+            while True:
+                results = c.fetchmany()
+                if not results:
+                    break
 
-                    writer.writerows(list(r) for r in results)
+                writer.writerows(list(r) for r in results)
 
 
 if __name__ == '__main__':
