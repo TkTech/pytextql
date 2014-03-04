@@ -5,9 +5,11 @@
 A python-based clone of the textql tool.
 
 Usage:
-    pytextql [<source>...] [-s <query>] [options]
+    pytextql [--source <source>...] [-s <query>] [options]
 
 Options:
+    --source=<path>     The source file(s) to load, or '-' for STDIN. You
+                        can specify any number of sources.
     --no-header         The source files do not contain headers in the first
                         row.
     --named-tables      Use the filenames (without extension) of source files
@@ -153,7 +155,7 @@ def main():
     with _open_db(args['--db']) as db:
         db.row_factory = sqlite3.Row
 
-        for table_count, source_path in enumerate(args['<source>']):
+        for table_count, source_path in enumerate(args['--source']):
             # There's at least one file/STDIN to load into the
             # database.
             if source_path == '-':
