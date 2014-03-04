@@ -57,7 +57,7 @@ class UnicodeCSVWriter(object):
 
     def writerow(self, row):
         self.writer.writerow([
-            column.encode(self.encoding) for column in row
+            unicode(column).encode(self.encoding) for column in row
         ])
 
     def writerows(self, rows):
