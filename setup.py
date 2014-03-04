@@ -31,6 +31,9 @@ if __name__ == '__main__':
 
     setup(
         name='pytextql',
+        author='Tyler Kennedy',
+        author_email='tk@tkte.ch',
+        url='https://github.com/TkTech/pytextql',
         version=get_version(),
         long_description=long_description,
         packages=find_packages(),
