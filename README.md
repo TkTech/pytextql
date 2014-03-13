@@ -31,6 +31,7 @@ A python-based clone of the textql tool.
     --sql=<q>, -s       Run an SQL query against the database.
     --skip=<n>          Skip <n> number of rows from the start of the file.
                         [default: 0]
+    --not-exists, -n    Only create the table if it doesn't exist.
 
 ## Examples
 
@@ -60,6 +61,10 @@ and use them over and over again.
     ...
     pytextql --db=testing.db -s "SELECT COUNT(id) FROM tbl0;"
     ...
+
+Create table only if the table doesn't exists already
+
+    pytextql -n --named-tables --source filename.csv -s 'select field from filename limit 1' --encoding cp1250 --db=testing.db
 
 ## Testing
 
