@@ -31,7 +31,7 @@ A python-based clone of the textql tool.
     --sql=<q>, -s       Run an SQL query against the database.
     --skip=<n>          Skip <n> number of rows from the start of the file.
                         [default: 0]
-    --not-exists, -n    Only create the table if if doesn't exists
+    --not-exists, -n    Only create the table if it doesn't exist.
 
 ## Examples
 
