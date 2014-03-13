@@ -106,8 +106,8 @@ def _create_table(db, table_name, columns, exists=True):
     with contextlib.closing(db.cursor()) as c:
         if not exists:
             table_exists = c.execute(
-                "SELECT EXISTS(SELECT 1 FROM sqlite_master"
-                " WHERE type='table' and name=?)"
+                'SELECT EXISTS(SELECT 1 FROM sqlite_master'
+                ' WHERE type="table" and name=?)'
             , (table_name,)).fetchall()
             if table_exists[0][0]:
                 return False
