@@ -27,6 +27,7 @@ Options:
     --sql=<q>, -s       Run an SQL query against the database.
     --skip=<n>          Skip <n> number of rows from the start of the file.
                         [default: 0]
+    --not_exists, -n    Only create the table if if doesn't exists
 """
 import os
 import sys
@@ -93,7 +94,7 @@ def _source(source, header=True, delimiter=',', encoding='utf8', skip=0):
     return headers, iterable
 
 
-def _create_table(db, table_name, columns):
+def _create_table(db, table_name, columns, exists=True):
     """
     Create's `table_name` in `db` if it does not already exist,
     and adds any missing columns.
@@ -103,6 +104,15 @@ def _create_table(db, table_name, columns):
     :param columns: An iterable of column names to ensure exist.
     """
     with contextlib.closing(db.cursor()) as c:
+        if not exists:
+            table_exists = c.execute(
+                "SELECT EXISTS(SELECT 1 FROM sqlite_master"
+                " WHERE type='table' and name='{table_name}')"
+                .format(table_name=table_name)
+            ).fetchall()
+            if table_exists[0][0]:
+                return False
+
         # Create the table if it doesn't already exist.
         c.execute((
             u'CREATE TABLE IF NOT EXISTS "{table_name}"'
@@ -134,6 +144,7 @@ def _create_table(db, table_name, columns):
         # Typically, table modifications occur outside of a
         # transaction so this is just a precaution.
         db.commit()
+    return True
 
 
 def _load_table(db, table_name, columns, reader, n=50000):
@@ -193,14 +204,18 @@ def main():
                     skip=skip_count
                 )
 
-                _create_table(db, table_name, headers)
-                _load_table(
-                    db,
-                    table_name,
-                    headers,
-                    reader,
-                    n=int(args['--chunk-size'])
+                exists = _create_table(
+                    db, table_name, headers, exists=not args['--not_exists']
                 )
+
+                if exists:
+                    _load_table(
+                        db,
+                        table_name,
+                        headers,
+                        reader,
+                        n=int(args['--chunk-size'])
+                    )
 
         if args['--sql']:
             with contextlib.closing(db.cursor()) as c:
