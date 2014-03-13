@@ -27,7 +27,7 @@ Options:
     --sql=<q>, -s       Run an SQL query against the database.
     --skip=<n>          Skip <n> number of rows from the start of the file.
                         [default: 0]
-    --not_exists, -n    Only create the table if if doesn't exists
+    --not-exists, -n    Only create the table if if doesn't exists
 """
 import os
 import sys
@@ -204,7 +204,7 @@ def main():
                 )
 
                 exists = _create_table(
-                    db, table_name, headers, exists=not args['--not_exists']
+                    db, table_name, headers, exists=not args['--not-exists']
                 )
 
                 if exists:
