@@ -64,9 +64,9 @@ and use them over and over again.
     pytextql --db=testing.db -s "SELECT COUNT(id) FROM tbl0;"
     ...
 
-Create table only if the table doesn't exists already
+By default, pytextql will error if you attempt to overwrite an existing table. You can use `--overwrite` to overwrite a table if it already exists.
 
-    pytextql -n --named-tables --source filename.csv -s 'select field from filename limit 1' --encoding cp1250 --db=testing.db
+    pytextql -n --named-tables --source filename.csv -s 'select field from filename limit 1' --encoding cp1250 --db=testing.db --overwrite
 
 ## Testing
 
