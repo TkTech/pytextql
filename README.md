@@ -31,7 +31,9 @@ A python-based clone of the textql tool.
     --sql=<q>, -s       Run an SQL query against the database.
     --skip=<n>          Skip <n> number of rows from the start of the file.
                         [default: 0]
-    --not-exists, -n    Only create the table if it doesn't exist.
+    --overwrite, -o     If a table already exists in a stored database,
+                        overwrite it. This is most useful when using
+                        named tables.
 
 ## Examples
 
