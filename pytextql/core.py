@@ -6,6 +6,7 @@ A python-based clone of the textql tool.
 
 Usage:
     pytextql [--source <source>...] [-s <query>] [options]
+    pytextql columns (--source <source>|--db=<path>)
 
 Options:
     --source=<path>     The source file(s) to load, or '-' for STDIN. You
@@ -214,6 +215,13 @@ def main():
                     delimiter=args['--delimiter'],
                     skip=skip_count
                 )
+
+                if args['columns']:
+                    # We just want to print out the column names that
+                    # we would end up using, we don't actually want to
+                    # load a full table.
+                    print(','.join(headers))
+                    return
 
                 _create_table(
                     db,
