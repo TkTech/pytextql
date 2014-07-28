@@ -6,7 +6,7 @@ A python-based clone of the textql tool.
 
 Usage:
     pytextql [--source <source>...] [-s <query>] [options]
-    pytextql columns (--source <source>|--db=<path>)
+    pytextql columns [--source <source>]
 
 Options:
     --source=<path>     The source file(s) to load, or '-' for STDIN. You
@@ -221,7 +221,7 @@ def main():
                     # we would end up using, we don't actually want to
                     # load a full table.
                     print(','.join(headers))
-                    return
+                    continue
 
                 _create_table(
                     db,
