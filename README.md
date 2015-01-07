@@ -37,7 +37,7 @@ A python-based clone of the textql tool.
 
 ## Examples
 
-Lets play with one of the samples including with the pytextql. By default,
+Lets play with one of the samples included with the pytextql source. By default,
 pytextql treats all data as UTF-8, but you can specify the encoding with
 `--encoding=` if you have somethinge exotic.
 
